@@ -218,6 +218,17 @@
         dropCounter = 0;
     }
 
+    function playerHardDrop() {
+        while (!collide(arena, player)) {
+            player.pos.y++;
+        }
+        player.pos.y--;
+        merge(arena, player);
+        playerReset();
+        arenaSweep();
+        dropCounter = 0;
+    }
+
     function playerMove(offset) {
         player.pos.x += offset;
         if (collide(arena, player)) {
@@ -336,8 +347,7 @@
         const threshold = 30;
 
         if (absDeltaX < threshold && absDeltaY < threshold) {
-            // Tap detected (rotate)
-            playerRotate(1);
+            // Tap detected (do nothing or could assign to another function)
         } else {
             if (absDeltaX > absDeltaY) {
                 if (deltaX > 0) {
@@ -350,7 +360,10 @@
             } else {
                 if (deltaY > 0) {
                     // Swipe down
-                    playerDrop();
+                    playerHardDrop(); // Perform hard drop
+                } else {
+                    // Swipe up
+                    playerRotate(1); // Rotate the tetromino
                 }
             }
         }
